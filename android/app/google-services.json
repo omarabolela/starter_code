@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "692851142075",
+    "project_id": "abolela-myfirst-notes",
+    "storage_bucket": "abolela-myfirst-notes.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692851142075:android:1e3a8eababba13bf5ee89e",
+        "android_client_info": {
+          "package_name": "com.example.map_exam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO7QRA2cDGNuFbt_LOVBd5t4rFD2_9m78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
