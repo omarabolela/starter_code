@@ -36,9 +36,9 @@ class Note {
 
 class NotesBundle {
   final String uid;
-  final List<Note> notes;
+  final List<Note> documents;
 
-  const NotesBundle({required this.uid, required this.notes});
+  const NotesBundle({required this.uid, required this.documents});
 
   factory NotesBundle.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data() ?? <String, dynamic>{};
@@ -49,6 +49,6 @@ class NotesBundle {
         items.add(Note.fromMap(item));
       }
     }
-    return NotesBundle(uid: doc.id, notes: items);
+    return NotesBundle(uid: doc.id, documents: items);
   }
 }
