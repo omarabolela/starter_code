@@ -1,19 +1,20 @@
+// note.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Note {
-  final String id;
+  final String id;              
   final String title;
   final String description;
 
   const Note({
-    this.id = '',
+    required this.id,
     required this.title,
     required this.description,
   });
 
-  factory Note.fromMap(Map<String, dynamic> m, {String id = ''}) {
+  factory Note.fromMap(Map<String, dynamic> m) {
     return Note(
-      id: id,
+      id: (m['id'] ?? '').toString(),                       
       title: (m['title'] ?? '').toString(),
       description: (m['description'] ?? '').toString(),
     );
@@ -29,6 +30,7 @@ class Note {
   }
 
   Map<String, dynamic> toMap() => {
+        'id': id,                                           
         'title': title,
         'description': description,
       };
@@ -46,7 +48,7 @@ class NotesBundle {
     final items = <Note>[];
     for (final item in raw) {
       if (item is Map<String, dynamic>) {
-        items.add(Note.fromMap(item));
+        items.add(Note.fromMap(item));                      
       }
     }
     return NotesBundle(uid: doc.id, documents: items);

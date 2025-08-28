@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                                         IconButton(
                                             tooltip: 'Delete',
                                             icon: const Icon(Icons.delete, size: 20, color: Colors.red),
-                                            onPressed: () {}),
+                                            onPressed: () => viewmodel.deleteNote(result)),
                                       ],
                                     )
                                   : null,

@@ -73,4 +73,19 @@ class HomeController extends GetxController {
   }
 
   void addNote() {}
+
+  Future<void> deleteNote(Note note) async {
+    if (_docRef == null) return;
+    await FirebaseFirestore.instance.runTransaction((tx) async {
+      final snap = await tx.get(_docRef!);
+      final data = snap.data() ?? <String, dynamic>{};
+      final List arr = List.from(data['documents'] ?? []);
+      final idx = arr.indexWhere((m) => (m['id'] ?? '') == note.id);
+      if (idx == -1) return;
+      arr.removeAt(idx);
+      tx.update(_docRef!, {'documents': arr});
+    });
+    editingIndex = null;
+    update();
+  }
 }
