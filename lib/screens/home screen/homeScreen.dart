@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:map_exam/home_screen_controller.dart';
+import 'package:map_exam/screens/home%20screen/homeScreen_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -60,6 +60,7 @@ class HomeScreen extends StatelessWidget {
                           itemCount: viewmodel.documents.length,
                           separatorBuilder: (_, __) => const Divider(height: 1),
                           itemBuilder: (_, i) {
+                            final note = viewmodel.documents[i];
                             final isActive = viewmodel.editingIndex == i;
 
                             return ListTile(

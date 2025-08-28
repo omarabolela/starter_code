@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:map_exam/edit_screen.dart';
-import 'package:map_exam/firebase_options.dart';
-import 'package:map_exam/home_screen.dart';
-import 'package:map_exam/login_screen.dart';
+import 'package:map_exam/screens/edit%20screen/editScreen.dart';
+import 'package:map_exam/services/firebase_options.dart';
+import 'package:map_exam/screens/home%20screen/homeScreen.dart';
+import 'package:map_exam/screens/login%20screen/loginscreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

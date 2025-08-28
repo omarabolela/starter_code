@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_exam/edit_screen_controller.dart';
-import 'package:map_exam/home_screen_controller.dart';
+import 'package:map_exam/screens/edit%20screen/editScreen_controller.dart';
+import 'package:map_exam/screens/home%20screen/homeScreen_controller.dart';
 
 class NoteEditorScreen extends StatelessWidget {
   static const String routeName = '/note-editor';

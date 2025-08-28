@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_exam/home_screen_controller.dart';
-import 'package:map_exam/note.dart';
+import 'package:map_exam/screens/home%20screen/homeScreen_controller.dart';
+import 'package:map_exam/models/note.dart';
 
 class NoteEditorController extends GetxController {
   bool initializing = true;
