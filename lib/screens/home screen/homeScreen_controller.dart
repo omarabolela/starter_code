@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-import 'package:map_exam/models/note.dart';
+import 'package:map_exam/models/note_model.dart';
 import 'package:map_exam/screens/edit%20screen/editScreen.dart';
 
 class HomeController extends GetxController {
