@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:map_exam/edit_screen.dart';
+
 import 'package:map_exam/note.dart';
 
 class HomeController extends GetxController {
@@ -21,31 +23,43 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      error = 'Not signed in';
-      loading = false;
-      update();
-      return;
-    }
-    uid = user.uid;
-    _docRef = FirebaseFirestore.instance.collection('notes').doc(uid);
+    loadNotes();
+  }
 
-    _sub = _docRef!.snapshots().listen((doc) {
-      if (!doc.exists) {
-        documents = [];
-      } else {
-        final bundle = NotesBundle.fromDoc(doc);
-        documents = bundle.documents;
+  Future<void> loadNotes() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        loading = false;
+        error = 'Not signed in';
+        update();
+        return;
       }
-      loading = false;
-      error = null;
-      update();
-    }, onError: (e) {
+      uid = user.uid;
+      _docRef = FirebaseFirestore.instance.collection('notes').doc(uid);
+
+      final exists = await _docRef!.get();
+      if (!exists.exists) {
+        await _docRef!.set({'documents': []});
+      }
+
+      _sub = _docRef!.snapshots().listen((doc) {
+        final data = doc.data() ?? <String, dynamic>{};
+        final List raw = List.from(data['documents'] ?? []);
+        documents = raw.map((e) => Note.fromMap(Map<String, dynamic>.from(e))).toList();
+        loading = false;
+        error = null;
+        update();
+      }, onError: (e) {
+        loading = false;
+        error = e.toString();
+        update();
+      });
+    } catch (e) {
       loading = false;
       error = e.toString();
       update();
-    });
+    }
   }
 
   Future<void> signOut() async {
@@ -54,9 +68,7 @@ class HomeController extends GetxController {
 
   void toggleDescriptions() {
     showDescriptions = !showDescriptions;
-    if (!showDescriptions) {
-      editingIndex = null;
-    }
+    if (!showDescriptions) editingIndex = null;
     update();
   }
 
@@ -72,7 +84,26 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void addNote() {}
+  void addNote() {
+    Get.toNamed(
+      NoteEditorScreen.routeName,
+      arguments: const NoteScreenArgs<Note?>(mode: NoteScreenMode.add, payload: null),
+    );
+  }
+
+  void viewNote(Note note) {
+    Get.toNamed(
+      NoteEditorScreen.routeName,
+      arguments: NoteScreenArgs<Note?>(mode: NoteScreenMode.view, payload: note),
+    );
+  }
+
+  void editNote(Note note) {
+    Get.toNamed(
+      NoteEditorScreen.routeName,
+      arguments: NoteScreenArgs<Note?>(mode: NoteScreenMode.edit, payload: note),
+    );
+  }
 
   Future<void> deleteNote(Note note) async {
     if (_docRef == null) return;
@@ -88,4 +119,29 @@ class HomeController extends GetxController {
     editingIndex = null;
     update();
   }
+}
+
+enum NoteScreenMode { view, edit, add }
+
+extension NoteScreenModeX on NoteScreenMode {
+  bool get isView => this == NoteScreenMode.view;
+  bool get isEdit => this == NoteScreenMode.edit;
+  bool get isAdd => this == NoteScreenMode.add;
+
+  String get label {
+    switch (this) {
+      case NoteScreenMode.view:
+        return 'View';
+      case NoteScreenMode.edit:
+        return 'Edit';
+      case NoteScreenMode.add:
+        return 'Add';
+    }
+  }
+}
+
+class NoteScreenArgs<T> {
+  final NoteScreenMode mode;
+  final T? payload;
+  const NoteScreenArgs({required this.mode, this.payload});
 }

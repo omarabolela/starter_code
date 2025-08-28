@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:map_exam/home_screen_controller.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,18 +16,15 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FloatingActionButton(
+                heroTag: null,
                 onPressed: viewmodel.toggleDescriptions,
-                child: Icon(
-                  viewmodel.showDescriptions ? Icons.expand_less : Icons.expand,
-                ),
+                child: Icon(viewmodel.showDescriptions ? Icons.expand_less : Icons.expand),
               ),
-              // const SizedBox(width: 12),
-              // FloatingActionButton(
-              //   onPressed: viewmodel.addNote,
-              //   child: const Icon(
-              //     Icons.add,
-              //   ),
-              // ),
+              const SizedBox(width: 12),
+              FloatingActionButton(
+                onPressed: viewmodel.addNote,
+                child: const Icon(Icons.add),
+              ),
             ],
           ),
           appBar: AppBar(
@@ -62,29 +60,27 @@ class HomeScreen extends StatelessWidget {
                           itemCount: viewmodel.documents.length,
                           separatorBuilder: (_, __) => const Divider(height: 1),
                           itemBuilder: (_, i) {
-                            final result = viewmodel.documents[i];
                             final isActive = viewmodel.editingIndex == i;
 
                             return ListTile(
                               onLongPress: () => viewmodel.toggleEditing(i),
-                              title: Text(result.title.isEmpty ? '(no title)' : result.title),
-                              subtitle: viewmodel.showDescriptions
-                                  ? Text(
-                                      result.description,
-                                    )
-                                  : null,
-                              trailing: (isActive)
+                              onTap: () => viewmodel.viewNote(note),
+                              title: Text(note.title.isEmpty ? '(no title)' : note.title),
+                              subtitle: viewmodel.showDescriptions ? Text(note.description) : null,
+                              trailing: isActive
                                   ? Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         IconButton(
-                                            tooltip: 'Edit',
-                                            icon: const Icon(Icons.edit, size: 20),
-                                            onPressed: () {}),
+                                          tooltip: 'Edit',
+                                          icon: const Icon(Icons.edit, size: 20),
+                                          onPressed: () => viewmodel.editNote(note),
+                                        ),
                                         IconButton(
-                                            tooltip: 'Delete',
-                                            icon: const Icon(Icons.delete, size: 20, color: Colors.red),
-                                            onPressed: () => viewmodel.deleteNote(result)),
+                                          tooltip: 'Delete',
+                                          icon: const Icon(Icons.delete, size: 20, color: Colors.red),
+                                          onPressed: () => viewmodel.deleteNote(note),
+                                        ),
                                       ],
                                     )
                                   : null,
