@@ -16,21 +16,14 @@ class NoteEditorScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text('${viewmodel.mode.label} Note'),
-            // actions: [
-            // enabling edit button in view mode
-            // if (viewmodel.mode.isView)
-            //   IconButton(
-            //     tooltip: 'Edit',
-            //     icon: const Icon(Icons.edit),
-            //     onPressed: viewmodel.startEditing,
-            //   ),
-            //   if (!viewmodel.mode.isView)
-            //     IconButton(
-            //       tooltip: 'Close',
-            //       icon: const Icon(Icons.save),
-            //       onPressed: viewmodel.saving ? null : viewmodel.save,
-            //     ),
-            // ],
+            actions: [
+              if (viewmodel.mode.isView)
+                IconButton(
+                  tooltip: 'Edit',
+                  icon: const Icon(Icons.edit),
+                  onPressed: viewmodel.startEditing,
+                ),
+            ],
           ),
           body: viewmodel.initializing
               ? const Center(child: CircularProgressIndicator())
