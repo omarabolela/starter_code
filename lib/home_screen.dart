@@ -11,24 +11,24 @@ class HomeScreen extends StatelessWidget {
       init: HomeController(),
       builder: (viewmodel) {
         return Scaffold(
-          // floatingActionButton: Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     FloatingActionButton(
-          //       onPressed:
-          //       viewmodel.addNote,
-          //       child: const Icon(
-          //         Icons.add,
-          //       ),
-          //     ),
-          //     FloatingActionButton(
-          //       onPressed: viewmodel.toggleDescriptions,
-          //       child: Icon(
-          //         viewmodel.showDescriptions ? Icons.expand_less : Icons.expand,
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: viewmodel.toggleDescriptions,
+                child: Icon(
+                  viewmodel.showDescriptions ? Icons.expand_less : Icons.expand,
+                ),
+              ),
+              // const SizedBox(width: 12),
+              // FloatingActionButton(
+              //   onPressed: viewmodel.addNote,
+              //   child: const Icon(
+              //     Icons.add,
+              //   ),
+              // ),
+            ],
+          ),
           appBar: AppBar(
             title: const Text('My Notes'),
             actions: [
