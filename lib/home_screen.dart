@@ -63,18 +63,31 @@ class HomeScreen extends StatelessWidget {
                           separatorBuilder: (_, __) => const Divider(height: 1),
                           itemBuilder: (_, i) {
                             final result = viewmodel.documents[i];
+                            final isActive = viewmodel.editingIndex == i;
+
                             return ListTile(
+                              onLongPress: () => viewmodel.toggleEditing(i),
                               title: Text(result.title.isEmpty ? '(no title)' : result.title),
-                              subtitle: AnimatedCrossFade(
-                                firstChild: const SizedBox.shrink(),
-                                secondChild: Text(
-                                  result.description,
-                                ),
-                                crossFadeState: viewmodel.showDescriptions
-                                    ? CrossFadeState.showSecond
-                                    : CrossFadeState.showFirst,
-                                duration: const Duration(milliseconds: 180),
-                              ),
+                              subtitle: viewmodel.showDescriptions
+                                  ? Text(
+                                      result.description,
+                                    )
+                                  : null,
+                              trailing: (isActive)
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                            tooltip: 'Edit',
+                                            icon: const Icon(Icons.edit, size: 20),
+                                            onPressed: () {}),
+                                        IconButton(
+                                            tooltip: 'Delete',
+                                            icon: const Icon(Icons.delete, size: 20, color: Colors.red),
+                                            onPressed: () {}),
+                                      ],
+                                    )
+                                  : null,
                             );
                           },
                         ),

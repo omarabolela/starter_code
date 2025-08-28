@@ -15,6 +15,7 @@ class HomeController extends GetxController {
 
   DocumentReference<Map<String, dynamic>>? _docRef;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _sub;
+  int? editingIndex;
   int get count => documents.length;
 
   @override
@@ -53,6 +54,15 @@ class HomeController extends GetxController {
 
   void toggleDescriptions() {
     showDescriptions = !showDescriptions;
+    if (!showDescriptions) {
+      editingIndex = null;
+    }
+    update();
+  }
+
+  void toggleEditing(int index) {
+    if (!showDescriptions) return;
+    editingIndex = (editingIndex == index) ? null : index;
     update();
   }
 
@@ -62,6 +72,5 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void addNote() {
-  }
+  void addNote() {}
 }
