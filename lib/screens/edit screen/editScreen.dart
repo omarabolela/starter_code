@@ -57,9 +57,23 @@ class NoteEditorScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       if (!viewmodel.mode.isView)
                         ElevatedButton.icon(
-                          onPressed: viewmodel.saving ? null : viewmodel.save,
+                          onPressed: viewmodel.saving ? null : viewmodel.onSavePressed,
                           icon: const Icon(Icons.check),
                           label: Text(viewmodel.mode.isAdd ? 'Add Note' : 'Save Changes'),
+                          style: ButtonStyle(
+                            // Grey-out when invalid (visual disable), normal when valid
+                            backgroundColor: MaterialStateProperty.resolveWith<Color?>((_) {
+                              return viewmodel.canSave
+                                  ? null // use theme default
+                                  : Theme.of(context).disabledColor;
+                            }),
+                            foregroundColor: MaterialStateProperty.resolveWith<Color?>((_) {
+                              // Match disabled foreground contrast
+                              if (viewmodel.canSave) return null;
+                              final onSurface = Theme.of(context).colorScheme.onSurface;
+                              return onSurface.withOpacity(0.38);
+                            }),
+                          ),
                         ),
                     ],
                   ),

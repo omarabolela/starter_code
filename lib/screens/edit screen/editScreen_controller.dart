@@ -14,12 +14,22 @@ class NoteEditorController extends GetxController {
   final titleCtrl = TextEditingController();
   final descCtrl = TextEditingController();
 
+  String _initialTitle = '';
+  String _initialDesc = '';
+
   DocumentReference<Map<String, dynamic>>? _docRef;
 
   @override
   void onInit() {
     super.onInit();
     _bootstrap();
+
+    _initialTitle = titleCtrl.text;
+    _initialDesc = descCtrl.text;
+
+    void _onTextChanged() => update();
+    titleCtrl.addListener(_onTextChanged);
+    descCtrl.addListener(_onTextChanged);
   }
 
   Future<void> _bootstrap() async {
@@ -57,6 +67,31 @@ class NoteEditorController extends GetxController {
     }
   }
 
+  bool get fieldsBothEmpty => titleCtrl.text.trim().isEmpty && descCtrl.text.trim().isEmpty;
+
+  bool get hasChanges => titleCtrl.text != _initialTitle || descCtrl.text != _initialDesc;
+
+  bool get isInvalid => fieldsBothEmpty || (!mode.isAdd && !hasChanges);
+
+  bool get canSave => !saving && !isInvalid;
+
+  void onSavePressed() {
+    if (isInvalid) {
+      final String msg =
+          fieldsBothEmpty ? "Title and description can't both be empty." : "No changes to save.";
+      if (Get.isSnackbarOpen) {
+        return;
+      }
+      Get.snackbar(
+        'Cannot save',
+        msg,
+        snackPosition: SnackPosition.TOP,
+      );
+      return;
+    }
+    save();
+  }
+
   void startEditing() {
     if (!mode.isView) return;
     mode = NoteScreenMode.edit;
@@ -69,6 +104,9 @@ class NoteEditorController extends GetxController {
     final title = titleCtrl.text.trim();
     final desc = descCtrl.text.trim();
     if (title.isEmpty || desc.isEmpty) {
+      if (Get.isSnackbarOpen) {
+        return;
+      }
       Get.snackbar('Nothing to save', 'Title or description must not both be empty.');
       return;
     }
